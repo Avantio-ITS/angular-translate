@@ -125,7 +125,7 @@ function translateDirective($translate, $q, $interpolate, $compile, $parse, $roo
         scope.interpolateParams = {};
         scope.preText = '';
         scope.postText = '';
-        var translationIds = {};
+        var translationIds = scope.translations = {};
 
         var initInterpolationParams = function (interpolateParams, iAttr, tAttr) {
           // initial setup

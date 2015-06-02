@@ -7,30 +7,6 @@ module.exports = function (grunt) {
 
   require('load-grunt-tasks')(grunt);
 
-  // Returns configuration for bower-install plugin
-  var loadTestScopeConfigurations = function () {
-    var scopes = fs.readdirSync('./test_scopes').filter(function (filename) {
-      return filename[0] !== '.';
-    });
-    var config = {
-      options: {
-        color: false,
-        interactive: false
-      }
-    };
-    // Create a sub config for each test scope
-    for (var idx in scopes) {
-      var scope = scopes[idx];
-      config['test_scopes_' + scope] = {
-        options: {
-          cwd: 'test_scopes/' + scope,
-          production: false
-        }
-      };
-    }
-    return config;
-  };
-
   grunt.initConfig({
 
     pkg: grunt.file.readJSON('bower.json'),
@@ -97,76 +73,7 @@ module.exports = function (grunt) {
         files: ['src/**/*.js', 'demo/async-loader/*'],
         tasks: ['jshint', 'karma:unit', 'concat', 'copy:demo']
       }
-    },
-
-    jshint: {
-
-      options: {
-        jshintrc: true
-      },
-
-      all: ['Gruntfile.js', '<%= lib_files.core %>', '<%= lib_files.ext.all %>', '<%= lib_files.test %>'],
-
-      core: {
-        files: {
-          src: ['<%= lib_files.core %>']
-        }
-      },
-
-      extensions: {
-        files: {
-          src: ['<%= lib_files.ext.all %>']
-        }
-      },
-
-      messageformat_interpolation: {
-        files: {
-          src: ['<%= lib_files.ext.messageformat_interpolation %>']
-        }
-      },
-
-      handler_log: {
-        files: {
-          src: ['<%= lib_files.ext.handler_log %>']
-        }
-      },
-
-      loader_partial: {
-        files: {
-          src: ['<%= lib_files.ext.loader_partial %>']
-        }
-      },
-
-      loader_static_files: {
-        files: {
-          src: ['<%= lib_files.ext.loader_static_files %>']
-        }
-      },
-
-      loader_url: {
-        files: {
-          src: ['<%= lib_files.ext.loader_url %>']
-        }
-      },
-
-      storage_cookie: {
-        files: {
-          src: ['<%= lib_files.ext.storage_cookie %>']
-        }
-      },
-
-      storage_local: {
-        files: {
-          src: ['<%= lib_files.ext.storage_local %>']
-        }
-      },
-
-      test: {
-        files: {
-          src: ['<%= lib_files.test %>']
-        }
-      }
-    },
+    }
 
     concat: {
 
@@ -629,34 +536,12 @@ module.exports = function (grunt) {
       defaults: {
         src: ['<%= concat.core.dest %>']
       }
-    },
-
-    'bower-install-simple': loadTestScopeConfigurations()
+    }
 
   });
 
 
-  grunt.registerTask('default', ['jshint:all', 'karma']);
-  grunt.registerTask('test', ['jshint:all', 'karma:unit', 'karma:midway']);
-  grunt.registerTask('install-test', ['bower-install-simple']);
-
-  // Advanced test tasks
-  grunt.registerTask('test-headless', ['karma:headless-unit', 'karma:headless-midway']);
-  grunt.registerTask('test-browser-firefox', ['karma:browser-firefox-unit', 'karma:browser-firefox-midway']);
-  grunt.registerTask('test-all', ['test', 'test-headless', 'test-browser-firefox']);
-
-  grunt.registerTask('prepare-release', [
-    'jshint:all',
-    'test-headless',
-    'build-all'
-  ]);
-
   grunt.registerTask('build', [
-    'jshint:all',
-    'karma:headless-unit',
-    'karma:headless-midway',
-    'karma:unit',
-    'karma:midway',
     'build-all'
   ]);
 
@@ -751,9 +636,4 @@ module.exports = function (grunt) {
     'concat:banner_storage_local',
     'uglify:storage_local'
   ]);
-
-
-  // For development purpose.
-  grunt.registerTask('dev', ['jshint', 'karma:unit', 'concat', 'copy:demo', 'watch:livereload']);
-  grunt.registerTask('server', ['express', 'express-keepalive']);
 };
