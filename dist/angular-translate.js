@@ -1819,8 +1819,7 @@ function $translate($STORAGE_KEY, $windowProvider, $translateSanitizationProvide
             return;
           }
           if(!$translationTable[lang][key]) {
-            console.error('There is no key ' + key + ' in language ' + lang);
-            return;
+            console.error('There is no key ' + key + ' in language ' + lang + '. Creating the key');
           }
           $translationTable[lang][key] = value;
         }
