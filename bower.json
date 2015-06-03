@@ -14,7 +14,10 @@
     "type": "git",
     "url": "git://github.com/angular-translate/angular-translate"
   },
-  "main": "./dist/angular-translate.js",
+  "main": [
+    "./dist/angular-translate.js",
+    "./dist/angular-translate-loader-static-files/angular-translate-loader-static-files.js"
+  ]
   "devDependencies": {
     "ngMidwayTester": "yearofmoo/ngMidwayTester",
     "angular": "~1.2.26",
