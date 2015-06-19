@@ -1,5 +1,5 @@
 /*!
- * angular-translate - v2.7.0 - 2015-06-02
+ * angular-translate - v2.7.2 - 2015-06-19
  * http://github.com/angular-translate/angular-translate
  * Copyright (c) 2015 ; Licensed MIT
  */
@@ -1819,7 +1819,8 @@ function $translate($STORAGE_KEY, $windowProvider, $translateSanitizationProvide
             return;
           }
           if(!$translationTable[lang][key]) {
-            console.error('There is no key ' + key + ' in language ' + lang + '. Creating the key');
+            console.error('There is no key ' + key + ' in language ' + lang);
+            return;
           }
           $translationTable[lang][key] = value;
         }
@@ -2645,6 +2646,10 @@ function translateDirective($translate, $q, $interpolate, $compile, $parse, $roo
         // Put translation processing function outside loop
         var updateTranslation = function(translateAttr, translationId, scope, interpolateParams, defaultTranslationText) {
           if (translationId) {
+            // By default, append .one to get the base translation
+            if(!/\.(one|few|many|other)$/.test(translationId)) {
+              translationId = translationId + '.one';
+            }
             $translate(translationId, interpolateParams, translateInterpolation, defaultTranslationText)
               .then(function (translation) {
                 applyTranslation(translation, scope, true, translateAttr);
@@ -2832,7 +2837,10 @@ function translateFilterFactory($parse, $translate) {
     if (!angular.isObject(interpolateParams)) {
       interpolateParams = $parse(interpolateParams)(this);
     }
-
+    // By default, append .one to get the base translation
+    if(!/\.(one|few|many|other)$/.test(translationId)) {
+      translationId = translationId + '.one';
+    }
     return $translate.instant(translationId, interpolateParams, interpolation);
   };
 

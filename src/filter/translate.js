@@ -61,7 +61,10 @@ function translateFilterFactory($parse, $translate) {
     if (!angular.isObject(interpolateParams)) {
       interpolateParams = $parse(interpolateParams)(this);
     }
-
+    // By default, append .one to get the base translation
+    if(!/\.(one|few|many|other)$/.test(translationId)) {
+      translationId = translationId + '.one';
+    }
     return $translate.instant(translationId, interpolateParams, interpolation);
   };
 

@@ -73,7 +73,7 @@ module.exports = function (grunt) {
         files: ['src/**/*.js', 'demo/async-loader/*'],
         tasks: ['jshint', 'karma:unit', 'concat', 'copy:demo']
       }
-    }
+    },
 
     concat: {
 
@@ -557,7 +557,6 @@ module.exports = function (grunt) {
   ]);
 
   grunt.registerTask('build:core', [
-    'jshint:core',
     'concat:core',
     'version',
     'file_append:core',
@@ -568,7 +567,6 @@ module.exports = function (grunt) {
   ]);
 
   grunt.registerTask('build:messageformat_interpolation', [
-    'jshint:messageformat_interpolation',
     'concat:messageformat_interpolation',
     'file_append:messageformat_interpolation',
     'umd:messageformat_interpolation',
@@ -578,7 +576,6 @@ module.exports = function (grunt) {
   ]);
 
   grunt.registerTask('build:handler_log', [
-    'jshint:handler_log',
     'concat:handler_log',
     'file_append:handler_log',
     'umd:handler_log',
@@ -588,7 +585,6 @@ module.exports = function (grunt) {
   ]);
 
   grunt.registerTask('build:loader_partial', [
-    'jshint:loader_partial',
     'concat:loader_partial',
     'file_append:loader_partial',
     'umd:loader_partial',
@@ -598,7 +594,6 @@ module.exports = function (grunt) {
   ]);
 
   grunt.registerTask('build:loader_static_files', [
-    'jshint:loader_static_files',
     'concat:loader_static_files',
     'file_append:loader_static_files',
     'umd:loader_static_files',
@@ -608,7 +603,6 @@ module.exports = function (grunt) {
   ]);
 
   grunt.registerTask('build:loader_url', [
-    'jshint:loader_url',
     'concat:loader_url',
     'file_append:loader_url',
     'umd:loader_url',
@@ -618,7 +612,6 @@ module.exports = function (grunt) {
   ]);
 
   grunt.registerTask('build:storage_cookie', [
-    'jshint:storage_cookie',
     'concat:storage_cookie',
     'file_append:storage_cookie',
     'umd:storage_cookie',
@@ -628,7 +621,6 @@ module.exports = function (grunt) {
   ]);
 
   grunt.registerTask('build:storage_local', [
-    'jshint:storage_local',
     'concat:storage_local',
     'file_append:storage_local',
     'umd:storage_local',
