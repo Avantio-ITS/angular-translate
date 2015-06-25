@@ -1545,7 +1545,11 @@ function $translate($STORAGE_KEY, $windowProvider, $translateSanitizationProvide
           , baseKey = split[0] || ''
           , plural = split[1] || 'one';
 
-        if(!!$translationTableUnflatten[lang] && !!$translationTableUnflatten[lang][baseKey][plural]){
+        if(!!$translationTableUnflatten[lang]){
+          if(!$translationTableUnflatten[lang][baseKey]) {
+            $translationTableUnflatten[lang][baseKey] = {};
+          }
+
           $translationTableUnflatten[lang][baseKey][plural] = value;
         }
       };
