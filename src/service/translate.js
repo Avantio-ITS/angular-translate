@@ -17,6 +17,7 @@ function $translate($STORAGE_KEY, $windowProvider, $translateSanitizationProvide
 
   var $translationTable = {},
       $pluralization = false,
+      $translationTableUnflatten = {},
       $preferredLanguage,
       $availableLanguageKeys = [],
       $languageKeyAliases,
@@ -1110,6 +1111,17 @@ function $translate($STORAGE_KEY, $windowProvider, $translateSanitizationProvide
         $rootScope.$emit('$translateChangeEnd', {language: key});
       };
 
+      var updateUnflattenTranslationTable = function(key, data) {
+        if(!!key) {
+          if(!$translationTableUnflatten[key]) {
+            $translationTableUnflatten[key] = {};
+          }
+          if(!!data) {
+            angular.extend($translationTableUnflatten[key], data);
+          }
+        }
+      };
+
       /**
        * @name loadAsync
        * @private
@@ -1161,6 +1173,9 @@ function $translate($STORAGE_KEY, $windowProvider, $translateSanitizationProvide
             key: key,
             table: translationTable
           });
+
+          updateUnflattenTranslationTable(key, data);
+
           $rootScope.$emit('$translateLoadingEnd', {language: key});
         };
         onLoaderSuccess.displayName = 'onLoaderSuccess';
@@ -1525,6 +1540,17 @@ function $translate($STORAGE_KEY, $windowProvider, $translateSanitizationProvide
         langPromises[key] = undefined;
       };
 
+      var updateUnflatten = function(lang, translationId, value) {
+        if (typeof(translationId) === 'string'){
+          translationId = translationId.split('.');
+        }
+        if (translationId.length > 1){
+          updateUnflatten($translationTableUnflatten[lang][translationId.shift()], translationId, value);
+        }else{
+          $translationTableUnflatten[lang][translationId[0]] = value;
+        }
+      };
+
       /**
        * Gestiona las traducciones en memoria.
        * @type {Object}
@@ -1538,10 +1564,15 @@ function $translate($STORAGE_KEY, $windowProvider, $translateSanitizationProvide
           translationId = checkPlural(translationId);
 
           $translationTable[lang][translationId] = value;
+          updateUnflatten(lang, translationId, value);
         },
 
         get: function(lang, translationId) {
           return $translationTable[lang][translationId];
+        },
+
+        getUnflatten: function(lang, translationId) {
+          return $translationTableUnflatten[lang][translationId];
         }
       };
 
