@@ -1530,16 +1530,17 @@ function $translate($STORAGE_KEY, $windowProvider, $translateSanitizationProvide
        * @type {Object}
        */
       $translate.translations = {
-        update: function(lang, key, value) {
+        update: function(lang, translationId, value) {
           if(!$translationTable[lang]) {
             console.error('There is no language ' + lang);
             return;
           }
-          if(!$translationTable[lang][key]) {
-            console.error('There is no key ' + key + ' in language ' + lang);
+          translationId = checkPlural(translationId);
+          if(!$translationTable[lang][translationId]) {
+            console.error('There is no translationId ' + translationId + ' in language ' + lang);
             return;
           }
-          $translationTable[lang][key] = value;
+          $translationTable[lang][translationId] = value;
         }
       };
 
