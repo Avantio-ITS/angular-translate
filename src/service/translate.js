@@ -1536,11 +1536,12 @@ function $translate($STORAGE_KEY, $windowProvider, $translateSanitizationProvide
             return;
           }
           translationId = checkPlural(translationId);
-          if(!$translationTable[lang][translationId]) {
-            console.error('There is no translationId ' + translationId + ' in language ' + lang);
-            return;
-          }
+
           $translationTable[lang][translationId] = value;
+        },
+
+        get: function(lang, translationId) {
+          return $translationTable[lang][translationId];
         }
       };
 
