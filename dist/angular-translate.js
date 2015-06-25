@@ -1,5 +1,5 @@
 /*!
- * angular-translate - v2.7.2 - 2015-06-19
+ * angular-translate - v2.7.3 - 2015-06-25
  * http://github.com/angular-translate/angular-translate
  * Copyright (c) 2015 ; Licensed MIT
  */
@@ -325,6 +325,7 @@ function $translate($STORAGE_KEY, $windowProvider, $translateSanitizationProvide
   'use strict';
 
   var $translationTable = {},
+      $pluralization = false,
       $preferredLanguage,
       $availableLanguageKeys = [],
       $languageKeyAliases,
@@ -365,7 +366,7 @@ function $translate($STORAGE_KEY, $windowProvider, $translateSanitizationProvide
         }
       };
 
-  var version = '2.7.0';
+  var version = '2.7.3';
 
   // tries to determine the browsers language
   var getFirstBrowserLanguage = function () {
@@ -665,6 +666,17 @@ function $translate($STORAGE_KEY, $windowProvider, $translateSanitizationProvide
    */
   this.useSanitizeValueStrategy = function (value) {
     $translateSanitizationProvider.useStrategy(value);
+    return this;
+  };
+
+  /**
+   * Tells the module to use the pluralization translation mode
+   * Uses [code].one by default or [few, many, other] if needed
+   * @param  {[type]} value
+   * @return {[type]} this
+   */
+  this.usePluralization = function(value) {
+    $pluralization = value;
     return this;
   };
 
@@ -1291,6 +1303,8 @@ function $translate($STORAGE_KEY, $windowProvider, $translateSanitizationProvide
           translationId = trim.apply(translationId);
         }
 
+        translationId = checkPlural(translationId);
+
         var promiseToWaitFor = (function () {
           var promise = $preferredLanguage ?
             langPromises[$preferredLanguage] :
@@ -1336,6 +1350,18 @@ function $translate($STORAGE_KEY, $windowProvider, $translateSanitizationProvide
           promiseToWaitFor['finally'](promiseResolved, deferred.reject);
         }
         return deferred.promise;
+      };
+
+      /**
+       * If pluralization is setted, so append .one to get the base translation
+       * @param  {[type]} translationId
+       * @return {[type]} translationId
+       */
+      var checkPlural = function (translationId) {
+        if($pluralization && !/\.(one|few|many|other)$/.test(translationId)) {
+          translationId = translationId + '.one';
+        }
+        return translationId;
       };
 
       /**
@@ -2197,6 +2223,8 @@ function $translate($STORAGE_KEY, $windowProvider, $translateSanitizationProvide
           translationId = trim.apply(translationId);
         }
 
+        translationId = checkPlural(translationId);
+
         var result, possibleLangKeys = [];
         if ($preferredLanguage) {
           possibleLangKeys.push($preferredLanguage);
@@ -2646,10 +2674,6 @@ function translateDirective($translate, $q, $interpolate, $compile, $parse, $roo
         // Put translation processing function outside loop
         var updateTranslation = function(translateAttr, translationId, scope, interpolateParams, defaultTranslationText) {
           if (translationId) {
-            // By default, append .one to get the base translation
-            if(!/\.(one|few|many|other)$/.test(translationId)) {
-              translationId = translationId + '.one';
-            }
             $translate(translationId, interpolateParams, translateInterpolation, defaultTranslationText)
               .then(function (translation) {
                 applyTranslation(translation, scope, true, translateAttr);
@@ -2837,10 +2861,7 @@ function translateFilterFactory($parse, $translate) {
     if (!angular.isObject(interpolateParams)) {
       interpolateParams = $parse(interpolateParams)(this);
     }
-    // By default, append .one to get the base translation
-    if(!/\.(one|few|many|other)$/.test(translationId)) {
-      translationId = translationId + '.one';
-    }
+
     return $translate.instant(translationId, interpolateParams, interpolation);
   };
 
