@@ -16,6 +16,7 @@ function $translate($STORAGE_KEY, $windowProvider, $translateSanitizationProvide
   'use strict';
 
   var $translationTable = {},
+      $pluralization = false,
       $preferredLanguage,
       $availableLanguageKeys = [],
       $languageKeyAliases,
@@ -356,6 +357,17 @@ function $translate($STORAGE_KEY, $windowProvider, $translateSanitizationProvide
    */
   this.useSanitizeValueStrategy = function (value) {
     $translateSanitizationProvider.useStrategy(value);
+    return this;
+  };
+
+  /**
+   * Tells the module to use the pluralization translation mode
+   * Uses [code].one by default or [few, many, other] if needed
+   * @param  {[type]} value
+   * @return {[type]} this
+   */
+  this.usePluralization = function(value) {
+    $pluralization = value;
     return this;
   };
 
@@ -982,6 +994,8 @@ function $translate($STORAGE_KEY, $windowProvider, $translateSanitizationProvide
           translationId = trim.apply(translationId);
         }
 
+        translationId = checkPlural(translationId);
+
         var promiseToWaitFor = (function () {
           var promise = $preferredLanguage ?
             langPromises[$preferredLanguage] :
@@ -1027,6 +1041,18 @@ function $translate($STORAGE_KEY, $windowProvider, $translateSanitizationProvide
           promiseToWaitFor['finally'](promiseResolved, deferred.reject);
         }
         return deferred.promise;
+      };
+
+      /**
+       * If pluralization is setted, so append .one to get the base translation
+       * @param  {[type]} translationId
+       * @return {[type]} translationId
+       */
+      var checkPlural = function (translationId) {
+        if($pluralization && !/\.(one|few|many|other)$/.test(translationId)) {
+          translationId = translationId + '.one';
+        }
+        return translationId;
       };
 
       /**
@@ -1887,6 +1913,8 @@ function $translate($STORAGE_KEY, $windowProvider, $translateSanitizationProvide
         if (translationId) {
           translationId = trim.apply(translationId);
         }
+
+        translationId = checkPlural(translationId);
 
         var result, possibleLangKeys = [];
         if ($preferredLanguage) {

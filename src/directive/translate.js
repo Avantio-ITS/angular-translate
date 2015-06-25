@@ -250,10 +250,6 @@ function translateDirective($translate, $q, $interpolate, $compile, $parse, $roo
         // Put translation processing function outside loop
         var updateTranslation = function(translateAttr, translationId, scope, interpolateParams, defaultTranslationText) {
           if (translationId) {
-            // By default, append .one to get the base translation
-            if(!/\.(one|few|many|other)$/.test(translationId)) {
-              translationId = translationId + '.one';
-            }
             $translate(translationId, interpolateParams, translateInterpolation, defaultTranslationText)
               .then(function (translation) {
                 applyTranslation(translation, scope, true, translateAttr);
