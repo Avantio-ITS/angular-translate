@@ -1,5 +1,5 @@
 /*!
- * angular-translate - v2.7.3 - 2015-06-25
+ * angular-translate - v2.7.4 - 2015-06-25
  * http://github.com/angular-translate/angular-translate
  * Copyright (c) 2015 ; Licensed MIT
  */
@@ -366,7 +366,7 @@ function $translate($STORAGE_KEY, $windowProvider, $translateSanitizationProvide
         }
       };
 
-  var version = '2.7.3';
+  var version = '2.7.4';
 
   // tries to determine the browsers language
   var getFirstBrowserLanguage = function () {
@@ -1839,16 +1839,17 @@ function $translate($STORAGE_KEY, $windowProvider, $translateSanitizationProvide
        * @type {Object}
        */
       $translate.translations = {
-        update: function(lang, key, value) {
+        update: function(lang, translationId, value) {
           if(!$translationTable[lang]) {
             console.error('There is no language ' + lang);
             return;
           }
-          if(!$translationTable[lang][key]) {
-            console.error('There is no key ' + key + ' in language ' + lang);
+          translationId = checkPlural(translationId);
+          if(!$translationTable[lang][translationId]) {
+            console.error('There is no translationId ' + translationId + ' in language ' + lang);
             return;
           }
-          $translationTable[lang][key] = value;
+          $translationTable[lang][translationId] = value;
         }
       };
 
