@@ -1849,14 +1849,13 @@ function $translate($STORAGE_KEY, $windowProvider, $translateSanitizationProvide
         langPromises[key] = undefined;
       };
 
-      var updateUnflatten = function(obj, translationId, value) {
-        if (typeof(translationId) === 'string'){
-          translationId = translationId.split('.');
-        }
-        if (translationId.length > 1){
-          updateUnflatten(obj[translationId.shift()], translationId, value);
-        }else{
-          obj[translationId[0]] = value;
+      var updateUnflatten = function(lang, translationId, value) {
+        var split = translationId.split(/\.(one|few|many|other)$/)
+          , baseKey = split[0] || ''
+          , plural = split[1] || 'one';
+
+        if(!!$translationTableUnflatten[lang] && !!$translationTableUnflatten[lang][baseKey][plural]){
+          $translationTableUnflatten[lang][baseKey][plural] = value;
         }
       };
 
@@ -1873,7 +1872,7 @@ function $translate($STORAGE_KEY, $windowProvider, $translateSanitizationProvide
           translationId = checkPlural(translationId);
 
           $translationTable[lang][translationId] = value;
-          updateUnflatten($translationTableUnflatten[lang], translationId, value);
+          updateUnflatten(lang, translationId, value);
         },
 
         get: function(lang, translationId) {
