@@ -1849,14 +1849,14 @@ function $translate($STORAGE_KEY, $windowProvider, $translateSanitizationProvide
         langPromises[key] = undefined;
       };
 
-      var updateUnflatten = function(lang, translationId, value) {
+      var updateUnflatten = function(obj, translationId, value) {
         if (typeof(translationId) === 'string'){
           translationId = translationId.split('.');
         }
         if (translationId.length > 1){
-          updateUnflatten($translationTableUnflatten[lang][translationId.shift()], translationId, value);
+          updateUnflatten(obj[translationId.shift()], translationId, value);
         }else{
-          $translationTableUnflatten[lang][translationId[0]] = value;
+          obj[translationId[0]] = value;
         }
       };
 
@@ -1873,7 +1873,7 @@ function $translate($STORAGE_KEY, $windowProvider, $translateSanitizationProvide
           translationId = checkPlural(translationId);
 
           $translationTable[lang][translationId] = value;
-          updateUnflatten(lang, translationId, value);
+          updateUnflatten($translationTableUnflatten[lang], translationId, value);
         },
 
         get: function(lang, translationId) {
