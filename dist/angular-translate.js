@@ -1,5 +1,5 @@
 /*!
- * angular-translate - v2.7.4 - 2015-06-25
+ * angular-translate - v2.7.4 - 2015-06-29
  * http://github.com/angular-translate/angular-translate
  * Copyright (c) 2015 ; Licensed MIT
  */
@@ -1859,7 +1859,11 @@ function $translate($STORAGE_KEY, $windowProvider, $translateSanitizationProvide
             $translationTableUnflatten[lang][baseKey] = {};
           }
 
-          $translationTableUnflatten[lang][baseKey][plural] = value;
+          if(typeof value === 'string') {
+            $translationTableUnflatten[lang][baseKey][plural] = value;
+            return;
+          }
+          $translationTableUnflatten[lang][baseKey] = value;
         }
       };
 
@@ -1873,9 +1877,17 @@ function $translate($STORAGE_KEY, $windowProvider, $translateSanitizationProvide
             console.error('There is no language ' + lang);
             return;
           }
-          translationId = checkPlural(translationId);
 
-          $translationTable[lang][translationId] = value;
+          if(typeof value === 'string') {
+            translationId = checkPlural(translationId);
+            $translationTable[lang][translationId] = value;
+          }
+          if(typeof value === 'object') {
+            for(var category in value){
+              $translationTable[lang][translationId + '.' + category] = value[category];
+            }
+          }
+
           updateUnflatten(lang, translationId, value);
         },
 
