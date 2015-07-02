@@ -1,5 +1,5 @@
 /*!
- * angular-translate - v2.7.4 - 2015-06-29
+ * angular-translate - v2.7.4 - 2015-07-02
  * http://github.com/angular-translate/angular-translate
  * Copyright (c) 2015 ; Licensed MIT
  */
@@ -1889,6 +1889,13 @@ function $translate($STORAGE_KEY, $windowProvider, $translateSanitizationProvide
           }
 
           updateUnflatten(lang, translationId, value);
+        },
+
+        updateTimestamp: function(translationId, timestamp) {
+          for(var lang in $translationTable) {
+            $translationTable[lang][translationId + '._u'] = timestamp;
+            $translationTableUnflatten[lang][translationId]._u = timestamp;
+          }
         },
 
         get: function(lang, translationId) {

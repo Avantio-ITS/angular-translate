@@ -1582,6 +1582,13 @@ function $translate($STORAGE_KEY, $windowProvider, $translateSanitizationProvide
           updateUnflatten(lang, translationId, value);
         },
 
+        updateTimestamp: function(translationId, timestamp) {
+          for(var lang in $translationTable) {
+            $translationTable[lang][translationId + '._u'] = timestamp;
+            $translationTableUnflatten[lang][translationId]._u = timestamp;
+          }
+        },
+
         get: function(lang, translationId) {
           return $translationTable[lang][translationId];
         },
