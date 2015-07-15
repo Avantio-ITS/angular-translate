@@ -1,5 +1,5 @@
 /*!
- * angular-translate - v2.7.4 - 2015-07-02
+ * angular-translate - v2.7.4 - 2015-07-15
  * http://github.com/angular-translate/angular-translate
  * Copyright (c) 2015 ; Licensed MIT
  */
@@ -1863,7 +1863,7 @@ function $translate($STORAGE_KEY, $windowProvider, $translateSanitizationProvide
             $translationTableUnflatten[lang][baseKey][plural] = value;
             return;
           }
-          $translationTableUnflatten[lang][baseKey] = value;
+          angular.extend($translationTableUnflatten[lang][baseKey], value);
         }
       };
 

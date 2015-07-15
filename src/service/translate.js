@@ -1554,7 +1554,7 @@ function $translate($STORAGE_KEY, $windowProvider, $translateSanitizationProvide
             $translationTableUnflatten[lang][baseKey][plural] = value;
             return;
           }
-          $translationTableUnflatten[lang][baseKey] = value;
+          angular.extend($translationTableUnflatten[lang][baseKey], value);
         }
       };
 
