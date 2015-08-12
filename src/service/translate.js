@@ -1590,11 +1590,35 @@ function $translate($STORAGE_KEY, $windowProvider, $translateSanitizationProvide
         },
 
         get: function(lang, translationId) {
+          if(!$translationTable[lang]) {
+            return translationId;
+          }
           return $translationTable[lang][translationId];
         },
 
         getUnflatten: function(lang, translationId) {
+          if(!$translationTableUnflatten[lang]) {
+            return translationId;
+          }
           return $translationTableUnflatten[lang][translationId];
+        },
+
+        loadLanguages: function(langs) {
+          if(!langs instanceof Array) {
+            langs = [langs];
+          }
+          var toLoad = langs.length
+            , onLoad = function() {
+              toLoad--;
+              if(!toLoad) {
+                $rootScope.$emit('$translateAllLanguagesLoaded');
+              }
+            };
+
+          for(var i = 0; i < langs.length; i++) {
+            var lang = langs[i];
+            loadAsync(lang).then(onLoad);
+          }
         }
       };
 
