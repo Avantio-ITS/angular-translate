@@ -1,5 +1,5 @@
 /*!
- * angular-translate - v2.7.4 - 2015-08-12
+ * angular-translate - v2.7.5 - 2015-08-12
  * http://github.com/angular-translate/angular-translate
  * Copyright (c) 2015 ; Licensed MIT
  */
@@ -367,7 +367,7 @@ function $translate($STORAGE_KEY, $windowProvider, $translateSanitizationProvide
         }
       };
 
-  var version = '2.7.4';
+  var version = '2.7.5';
 
   // tries to determine the browsers language
   var getFirstBrowserLanguage = function () {
@@ -1917,8 +1917,11 @@ function $translate($STORAGE_KEY, $windowProvider, $translateSanitizationProvide
             langs = [langs];
           }
           var toLoad = langs.length
-            , onLoad = function() {
+            , onLoad = function(translation) {
               toLoad--;
+
+              translations(translation.key, translation.table);
+
               if(!toLoad) {
                 $rootScope.$emit('$translateAllLanguagesLoaded');
               }

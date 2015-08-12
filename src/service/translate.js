@@ -1593,14 +1593,14 @@ function $translate($STORAGE_KEY, $windowProvider, $translateSanitizationProvide
           if(!$translationTable[lang]) {
             return translationId;
           }
-          return $translationTable[lang][translationId];
+          return $translationTable[lang][translationId] || translationId;
         },
 
         getUnflatten: function(lang, translationId) {
           if(!$translationTableUnflatten[lang]) {
             return translationId;
           }
-          return $translationTableUnflatten[lang][translationId];
+          return $translationTableUnflatten[lang][translationId] || translationId;
         },
 
         loadLanguages: function(langs) {
@@ -1608,8 +1608,11 @@ function $translate($STORAGE_KEY, $windowProvider, $translateSanitizationProvide
             langs = [langs];
           }
           var toLoad = langs.length
-            , onLoad = function() {
+            , onLoad = function(translation) {
               toLoad--;
+
+              translations(translation.key, translation.table);
+
               if(!toLoad) {
                 $rootScope.$emit('$translateAllLanguagesLoaded');
               }
