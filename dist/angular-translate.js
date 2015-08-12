@@ -1902,14 +1902,14 @@ function $translate($STORAGE_KEY, $windowProvider, $translateSanitizationProvide
           if(!$translationTable[lang]) {
             return translationId;
           }
-          return $translationTable[lang][translationId];
+          return $translationTable[lang][translationId] || translationId;
         },
 
         getUnflatten: function(lang, translationId) {
           if(!$translationTableUnflatten[lang]) {
             return translationId;
           }
-          return $translationTableUnflatten[lang][translationId];
+          return $translationTableUnflatten[lang][translationId] || translationId;
         },
 
         loadLanguages: function(langs) {
