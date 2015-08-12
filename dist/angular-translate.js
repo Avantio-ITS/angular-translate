@@ -1894,6 +1894,9 @@ function $translate($STORAGE_KEY, $windowProvider, $translateSanitizationProvide
         updateTimestamp: function(translationId, timestamp) {
           for(var lang in $translationTable) {
             $translationTable[lang][translationId + '._u'] = timestamp;
+            if(!$translationTableUnflatten[lang][translationId]) {
+              $translationTableUnflatten[lang][translationId] = {};
+            }
             $translationTableUnflatten[lang][translationId]._u = timestamp;
           }
         },
