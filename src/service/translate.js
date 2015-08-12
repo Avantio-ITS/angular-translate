@@ -1593,14 +1593,14 @@ function $translate($STORAGE_KEY, $windowProvider, $translateSanitizationProvide
           if(!$translationTable[lang]) {
             return translationId;
           }
-          return $translationTable[lang][translationId] || translationId;
+          return $translationTable[lang][translationId];
         },
 
         getUnflatten: function(lang, translationId) {
           if(!$translationTableUnflatten[lang]) {
             return translationId;
           }
-          return $translationTableUnflatten[lang][translationId] || translationId;
+          return $translationTableUnflatten[lang][translationId];
         },
 
         loadLanguages: function(langs) {
