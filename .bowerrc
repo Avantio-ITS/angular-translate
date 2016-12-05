@@ -1,5 +1,9 @@
 {
   "directory": "bower_components",
-  "registry": "http://bower.avantio.int:5678",
+  "registry": "https://admin:admin123@nexus.avantio.int/repository/bower-private/",
+  "nexus": {
+    "username" : "admin",
+    "password" : "admin123"
+  },
   "timeout": 300000
 }
